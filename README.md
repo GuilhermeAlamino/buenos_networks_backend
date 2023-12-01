@@ -70,6 +70,14 @@ VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
 
 `composer install`
 
+## Instale os pacotes e dependências
+
+`npm install`
+
+## Compílar os assets
+
+`npm run dev`
+
 ## Gerar key da aplicação
 
 `php artisan key:generate`
