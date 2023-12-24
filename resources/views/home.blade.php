@@ -19,6 +19,9 @@
                         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
                         <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase.js"></script>
                         <script src="{{ asset('js/enable-push.js') }}" defer></script>
+                        <script>
+                            const vapidPublicKey = '{{ env('VAPID_PUBLIC_KEY') }}';
+                        </script>
                     </div>
                 </div>
             </div>
