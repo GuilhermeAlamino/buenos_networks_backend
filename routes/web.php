@@ -50,6 +50,8 @@ Route::middleware(['auth'])->prefix('dashboard')->name('dashboard.')->group(func
         Route::get('/create', [UserController::class, 'create'])->name('create')->middleware('can:isAdmin,App\Models\User');
         Route::post('/store', [UserController::class, 'store'])->name('store')->middleware('can:isAdmin,App\Models\User');
     });
-    Route::post('/store-token', [NotificationSendController::class, 'updateDeviceToken'])->name('store.token');
-    Route::post('/send-web-notification', [NotificationSendController::class, 'sendNotification'])->name('send.web-notification');
+
+    Route::post('/subscribe', [NotificationSendController::class, 'store'])->name('subscribe');
+
+    Route::get('/push', [NotificationSendController::class, 'push'])->name('push');
 });

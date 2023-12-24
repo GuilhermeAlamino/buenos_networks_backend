@@ -3,18 +3,21 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\NotificationSendController;
 use App\Http\Requests\ProfileUpdateRequest;
-use App\Http\Services\NotificationService;
+use App\Notifications\UserDataUpdated;
+use App\Notifications\UserUpdated;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Notification;
 
 class ProfileController extends Controller
 {
-    protected $notificationService;
+    protected $notificationController;
 
-    public function __construct(NotificationService $notificationService)
+    public function __construct(NotificationSendController $notificationController)
     {
-        $this->notificationService = $notificationService;
+        $this->notificationController = $notificationController;
     }
 
     public function show()
@@ -35,9 +38,10 @@ class ProfileController extends Controller
         $user->update($validatedData);
 
         if ($user->id == Auth::user()->id) {
-            $this->notificationService->sendNotification('Parabéns', 'Você atualizou seu registro.', Auth::user()->device_token);
+            $this->notificationController->notifyUserUpdated(Auth::user());
         } else {
-            $this->notificationService->sendNotification('Atualizaram o seu registro', 'Usúario: ' . Auth::user()->name, $user->device_token);
+            $this->notificationController->storePushSubscription($request);
+            $this->notificationController->notifyUserDataUpdated($user);
         }
 
         return redirect()->route('dashboard.profile.show')->with('success', 'Perfil atualizado com sucesso!');

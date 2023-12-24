@@ -2,19 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use App\Notifications\UserDataUpdated;
+use App\Notifications\UserUpdated;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use GuzzleHttp\Client;
+use Notification;
 
 class NotificationSendController extends Controller
 {
-    public function updateDeviceToken(Request $request)
+    public function store(Request $request)
     {
-        Auth::user()->device_token =  $request->token;
+        $this->storePushSubscription($request);
 
-        Auth::user()->save();
+        return response()->json(['success' => true], 200);
+    }
 
-        return response()->json(['Token criado com sucesso.']);
+    public function storePushSubscription(Request $request)
+    {
+        $this->validate($request, [
+            'endpoint'    => 'required',
+            'keys.auth'   => 'required',
+            'keys.p256dh' => 'required'
+        ]);
+
+        $endpoint = $request->endpoint;
+        $token = $request->keys['auth'];
+        $key = $request->keys['p256dh'];
+        $user = Auth::user();
+        $user->updatePushSubscription($endpoint, $key, $token);
+    }
+
+    public function notifyUserDataUpdated($notifiable)
+    {
+        Notification::send($notifiable, new UserDataUpdated);
+    }
+    
+    public function notifyUserUpdated($notifiable)
+    {
+        Notification::send($notifiable, new UserUpdated);
     }
 }
