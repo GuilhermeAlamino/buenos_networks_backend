@@ -82,6 +82,10 @@ VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
 
 `php artisan key:generate`
 
+## Gerar Chave para autenticação do navegador
+
+`php artisan webpush:vapid`
+
 ## Rodar migrações do banco (ORM)
 
 `php artisan migrate --seed`
