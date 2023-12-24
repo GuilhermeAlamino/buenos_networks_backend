@@ -46,11 +46,12 @@ VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
 
 - Forgot Password -> Implementar recurso de esqueci minha senha.
 
-###  Frameworks
+###  Requisitos/Frameworks
 
+- PHP ^8.1
 - Laravel ^10.10
 - Axios
-- Jquuery
+- Jquery
 
 ### Solid (SRP/ISP)
 
